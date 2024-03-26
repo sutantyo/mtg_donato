@@ -37,7 +37,7 @@
   window.addEventListener("mousemove", function(e) {
     if (isDown) {
       var rect = slider.parentElement.getBoundingClientRect();
-      var x = rect.left + e.clientX; // x position relative to the container
+      var x = rect.left + e.clientX - 8.4; // x position relative to the container
       var newLeftPercent = (x / rect.width) * 100;
       
       // Keep the slider within the bounds of the `.top-image`.
