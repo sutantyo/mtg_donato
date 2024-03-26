@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Image Comparison Slider</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="comparison-container">
+  <img src="image2.jpg" class="bottom-image">
+  <img src="image1.webp" class="top-image">
+  <div class="slider"></div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+  var slider = document.querySelector(".slider");
+  var imageTop = document.querySelector(".top-image");
+  var isDown = false;
+  
+  // Set initial slider position
+  var initialLeftPercent = 50.0 + 8.4; 
+  slider.style.left = initialLeftPercent + '%'; 
+  
+  slider.addEventListener("mousedown", function(e) {
+    isDown = true;
+    var rect = slider.getBoundingClientRect();
+    startX = e.clientX - rect.left; // start position relative to the slider
+  });
+
+  window.addEventListener("mouseup", function() {
+    isDown = false;
+  });
+
+  window.addEventListener("mousemove", function(e) {
+    if (isDown) {
+      var rect = slider.parentElement.getBoundingClientRect();
+      var x = rect.left + e.clientX; // x position relative to the container
+      var newLeftPercent = (x / rect.width) * 100;
+      
+      // Keep the slider within the bounds of the `.top-image`.
+      newLeftPercent = Math.max(newLeftPercent, 0);
+      newLeftPercent = Math.min(newLeftPercent, 100);
+
+      // Update the slider's position.
+      slider.style.left = newLeftPercent + '%';
+      
+      // Update the `.top-image`'s clip-path to match the slider's position.
+      imageTop.style.clipPath = `polygon(${newLeftPercent-8.4}% 0, 100% 0, 100% 100%, ${newLeftPercent-8.4}% 100%)`;
+    }
+  });
+});
+
+</script>
+
+</body>
+</html>
+
