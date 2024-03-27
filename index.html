@@ -11,7 +11,11 @@
 <div class="comparison-container">
   <img src="image2.jpg" class="bottom-image">
   <img src="image1.webp" class="top-image">
-  <div class="slider"></div>
+  <div class="slider">
+   <div class="pill">
+    <span class="pill-text">MOVE</span>
+   </div>
+  </div>
 </div>
 
 <script>
@@ -43,6 +47,7 @@
       startX = e.clientX - rect.left; // start position relative to the slider
     } else if (e.type === "touchstart") {
       startX = e.touches[0].clientX - rect.left; // start position relative to the slider
+      e.preventDefault();
     }
   }
 
