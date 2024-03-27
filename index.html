@@ -58,6 +58,7 @@
         x = e.clientX - 8.4; // x position relative to the container
       } else if (e.type === "touchmove") {
         x = e.touches[0].clientX - rect.left - 8.4; // x position relative to the container
+        e.preventDefault(); // prevent default touch behavior
       }
       var newLeftPercent = (x / rect.width) * 100;
       
