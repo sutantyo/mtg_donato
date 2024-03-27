@@ -21,23 +21,44 @@
   var isDown = false;
   
   // Set initial slider position
-  var initialLeftPercent = 50.0 + 8.4; 
+  var initialLeftPercent = 40.0 + 8.4; 
   slider.style.left = initialLeftPercent + '%'; 
   
-  slider.addEventListener("mousedown", function(e) {
+    // Touch events
+
+      // Mouse events
+  slider.addEventListener("mousedown", startDrag);
+  window.addEventListener("mouseup", endDrag);
+  window.addEventListener("mousemove", drag);
+
+  // Touch events
+  slider.addEventListener("touchstart", startDrag);
+  window.addEventListener("touchend", endDrag);
+  window.addEventListener("touchmove", drag);
+
+  function startDrag(e) {
     isDown = true;
     var rect = slider.getBoundingClientRect();
-    startX = e.clientX - rect.left; // start position relative to the slider
-  });
+    if (e.type === "mousedown") {
+      startX = e.clientX - rect.left; // start position relative to the slider
+    } else if (e.type === "touchstart") {
+      startX = e.touches[0].clientX - rect.left; // start position relative to the slider
+    }
+  }
 
-  window.addEventListener("mouseup", function() {
+  function endDrag() {
     isDown = false;
-  });
+  }
 
-  window.addEventListener("mousemove", function(e) {
+  function drag(e) {
     if (isDown) {
       var rect = slider.parentElement.getBoundingClientRect();
-      var x = rect.left + e.clientX - 8.4; // x position relative to the container
+      var x;
+      if (e.type === "mousemove") {
+        x = e.clientX - 8.4; // x position relative to the container
+      } else if (e.type === "touchmove") {
+        x = e.touches[0].clientX - rect.left - 8.4; // x position relative to the container
+      }
       var newLeftPercent = (x / rect.width) * 100;
       
       // Keep the slider within the bounds of the `.top-image`.
@@ -50,7 +71,8 @@
       // Update the `.top-image`'s clip-path to match the slider's position.
       imageTop.style.clipPath = `polygon(${newLeftPercent-8.4}% 0, 100% 0, 100% 100%, ${newLeftPercent-8.4}% 100%)`;
     }
-  });
+  }
+
 });
 
 </script>
